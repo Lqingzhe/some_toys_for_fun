@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: harassment-app
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - app-network
+    depends_on:
+      - llonebot
+
+  llonebot:
+    image: initialencounter/llonebot:latest
+    container_name: llonebot
+    restart: always
+    privileged: true
+    ipc: host
+    ports:
+      - "3000:3000"   # 消息接口
+      - "3080:3080"   # 网页登录
+    environment:
+      - LLOB_HTTP_ENABLE=true
+      - LLOB_HTTP_HOST=0.0.0.0
+      - LLOB_HTTP_PORT=3000
+      - LLOB_WEB_PORT=3080
+      - LLOB_ACCESS_TOKEN=114514
+    networks:
+      - app-network
+    volumes:
+      - qq_data:/data
+
+
+volumes:
+  qq_data:
