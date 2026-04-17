@@ -76,12 +76,12 @@ func Send(ctx context.Context, cancel context.CancelFunc, MessageInfo []model.Me
 			}
 			goalID, resp, err := do(MessageInfo[p].Message)
 			if err == nil {
-				log.Printf("success:\ngoal ID:%s,resp:%s\n", goalID, resp)
+				log.Printf("success:\nGoalID:%s,resp:%s\n", goalID, resp)
 			}
 			for i, errTime := 1, 1*time.Second; err != nil; i++ {
 				time.Sleep(errTime)
 				_, resp, err = do(MessageInfo[p].Message)
-				log.Printf("error:\ngoal ID:%s,retry %d times, send result:%s\n", goalID, i, resp)
+				log.Printf("error:\nGoalID:%s,retry %d times, send result:%s\n", goalID, i, resp)
 				if i == 3 && err != nil {
 					cancel()
 					return
